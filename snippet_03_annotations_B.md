@@ -1,7 +1,7 @@
 Snippet 03 B - Annotations, Another Helping
 ==============
 
-![Ellie, an Elm online editor and compiler to run the code in this file](https://ellie-app.com/b945x2L3da1/0)
+![Ellie](https://ellie-app.com/b945x2L3da1/0)
 
 ```elm
 module Main exposing (..)

@@ -7,25 +7,15 @@ Snippet 03 B - Annotations, Another Helping
 module Main exposing (..)
 
 import Html exposing (..)
-import Array exposing (..)
 
 
-{-
-   > List.map (\a -> 9) [1, 2]
-   [9,9] : List number
-   > mapper = List.map
-   <function> : (a -> b) -> List a -> List b
-   > mapper (\a -> 9) [1, 2, 4]
-   [9,9,9] : List number
-   > mapperNines = mapper (\a -> 9)
-   <function> : List a -> List number
-   > mapperNines [2, 5, 6]
-   [9,9,9] : List number
-   I want to demonstrate that Currying is pieces going together
--}
+insectsIntoYouDecide : (insect -> otherInsect) -> List insect -> List otherInsect
+insectsIntoYouDecide insectTransformer insects = 
+    List.map insectTransformer insects
 
 
-beesIntoWasps someBees =
+insectsIntoWasp : List String -> List String
+insectsIntoWasp someBees =
     List.map (\a -> "wasp") someBees
 
 
@@ -39,7 +29,10 @@ bees =
     [ "bee", "bee", "bee" ]
 
 
-main : Html msg
 main =
-    text "hi"
+    div [] 
+     [text <| toString bees
+    , text " become"
+    , h4 [] [text <| toString <| (insectsIntoWasp bees)]
+    ]
 ```

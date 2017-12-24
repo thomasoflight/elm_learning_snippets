@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Array exposing (..)
 
 
 insectsIntoYouDecide : (insect -> otherInsect) -> List insect -> List otherInsect
@@ -24,6 +23,7 @@ bees =
     [ "bee", "bee", "bee" ]
 
 
+main : Html msg
 main =
     div []
         [ text <| toString bees

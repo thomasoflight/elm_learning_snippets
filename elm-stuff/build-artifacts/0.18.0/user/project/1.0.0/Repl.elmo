@@ -1,39 +1,4 @@
-var _user$project$Repl$under70 = function (_p0) {
-	var _p1 = _p0;
-	return _elm_lang$core$Native_Utils.cmp(_p1.age, 70) < 0;
-};
 var _user$project$Repl$t_s_o_l = {ctor: '_Tuple0'};
-var _user$project$Repl$over9000 = function (num) {
-	return (_elm_lang$core$Native_Utils.cmp(num, 9000) > 0) ? 'mega!' : 'not mega!';
-};
-var _user$project$Repl$numbers = {
-	ctor: '::',
-	_0: 3,
-	_1: {
-		ctor: '::',
-		_0: 1,
-		_1: {ctor: '[]'}
-	}
-};
-var _user$project$Repl$names = {
-	ctor: '::',
-	_0: 'Alice',
-	_1: {
-		ctor: '::',
-		_0: 'Bob',
-		_1: {ctor: '[]'}
-	}
-};
-var _user$project$Repl$margaretAtwood = {age: 37, level: 45};
-var _user$project$Repl$johnny = {type_: 'madness', age: 150};
-var _user$project$Repl$oldJohnny = _elm_lang$core$Native_Utils.update(
-	_user$project$Repl$johnny,
-	{age: 200});
-var _user$project$Repl$hey = _elm_lang$core$List$sort(_user$project$Repl$numbers);
-var _user$project$Repl$harryPotter = {harry: 'human', hagrid: 'giant'};
-var _user$project$Repl$goodName = function (name) {
-	return (_elm_lang$core$Native_Utils.cmp(
-		_elm_lang$core$String$length(name),
-		20) < 1) ? {ctor: '_Tuple2', _0: true, _1: 'name accepted'} : {ctor: '_Tuple2', _0: false, _1: 'name was too long foo'};
-};
-var _user$project$Repl$d_e_l_t_r_o_n_3_0_3_0 = _user$project$Repl$oldJohnny.age;
+var _user$project$Repl$point = {x: 3, y: 4};
+var _user$project$Repl$mary = {sun: 'sun'};
+var _user$project$Repl$d_e_l_t_r_o_n_3_0_3_0 = _user$project$Repl$mary;

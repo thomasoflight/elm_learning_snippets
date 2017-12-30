@@ -1,0 +1,82 @@
+-- thomasoflight [8:24 PM]
+-- Hi All, I’m wondering if anyone would be able to explain how “onInput” works? I kind of get it…
+--
+-- I’m working through the intro-to-elm pdf and got stuck on this part. I’ve pasted an Ellie here with --comments above the areas I’m struggling with: https://ellie-app.com/x6hkWsVSa1/0 .
+-- I’ve done a little bit of research on “onInput” here: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Events#targetValue but honestly, it’s all feeling pretty opaque.
+
+
+nqthqn [9:17 PM]
+@thomasoflight The `Msg` union type is data. `Change String` is a `Msg` that is constructed using a `String`. Then you pattern match the `Msg` type catching the string. onInput takes a message that is constructed with a `String` (a `(String -> Msg`). It’s kind of like a function. You can put other parameters in there too, like `NewGif (Result Http.Error String)` (http://elm-lang.org/examples/http) in which case you handle both cases:
+
+```    NewGif (Ok newUrl) ->
+      (Model model.topic newUrl, Cmd.none)
+
+    NewGif (Err _) ->
+      (model, Cmd.none)
+```
+1 reply 1 day ago View thread
+
+
+nqthqn
+[9:18 PM]
+Thinking of it as just data and pattern matching helped me.  The docs on `onInput` are helpful: http://package.elm-lang.org/packages/elm-lang/html/2.0.0/Html-Events#onInput and the implementation: https://github.com/elm-lang/html/blob/2.0.0/src/Html/Events.elm#L108
+
+
+[9:19]
+Good luck! I’m sure it will click eventually :slightly_smiling_face:
+
+mc2 [9:53 PM]
+Hi @thomasoflight It's confusing to me too, but I learned a bit today. I'll try to help. I suggest seeing my earlier post today here are 2:50 pm and the replies.
+
+I reread https://guide.elm-lang.org/types/union_types.html
+
+Try typing `type Msg = Change String` in `elm-repl`, then type `Change` on its own. You should see:
+```> type Msg = Change String
+> Change
+<function> : String -> Repl.Msg
+```
+_I'm not sure what "Repl." means in front of the message here_ but basically it's a kind of *declaration* of a function named "Change" that takes a string and returns a Msg. It's type is, again: `<function> : String -> Msg`
+
+In the `onInput` type *annotation* we don't use the term "function" but instead it's "whole" type annotation *in parentheses* [note: not a tuple, which my brain keeps wanting to think it is. Dear brain, tuples have commas: ( a, b ) ]
+`onInput : (String -> msg) -> Attribute msg`
+
+So in the code ` input [ onInput Change ]`, `onInput` is expecting one parameter of type `(String -> msg) ` and returns `Attribute msg`
+
+In the update function
+```case msg of
+```
+matches the Union Type `Change String` as the current `msg` and sticks the String (`event.target.value` put in `Change` by `onInput`) into a variable name you provide, here as `newContent`.
+```Change newContent ->
+{ model | content = newContent }
+```
+(others are welcome to correct my incipient understanding) (edited)
+
+
+
+cjduncana [9:57 PM]
+`Repl.Msg` indicates that `Msg` is a type created in the `Repl` module.
+
+[9:58]
+If you noticed, the tool you are using is called `elm repl` which stands for Elm's Read-Evaluate-Print Loop
+
+[10:00]
+Whenever you write something inside that tool, it reads what you wrote, then it evaluates what you wrote, and lastly it prints out to screen the result of that evaluation.
+
+
+[10:01]
+Whenever you create something in that tool, whether it be a constant, function, or type it gets added to the `Repl` module.
+
+
+[10:02]
+Since you are already "in" the `Repl` module, you do not have to write that in front of your constants, functions, or types, only stuff from other modules.
+
+
+thomasoflight [10:50 PM]
+@mc2 Hey! Thanks. Will check this when I'm back in code-mode.
+Mark Carranza
+Hi @thomasoflight It's confusing to me too, but I learned a bit today. I'll try to help. I suggest seeing my earlier post today here are 2:50 pm and the replies.
+
+I reread https://guide.elm-lang.org/types/union_types.html
+
+Try typing `type Msg = Change String` in `elm-repl`, then type `Change` on its own. You should see: Show more…
+Posted in #beginnersDec 26th at 9:53 PM

@@ -3,6 +3,9 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
+import String exposing (any, contains, join, isEmpty)
+import Char exposing (isUpper, isLower, isDigit)
+import List
 
 
 main =
@@ -62,20 +65,44 @@ view model =
 viewValidation : Model -> Html Msg
 viewValidation model =
     let
-        ( color, message ) =
-            if model.password == model.passwordRepeat then
+        ( color, isMatch ) =
+            if List.any isEmpty [ model.password, model.name ] then
+                ( "pink", "one or more fields missing my friend" )
+            else if model.password == model.passwordRepeat && not allConditionsMet then
+                ( "blue", "passwords match but... other stuff is off" )
+            else if model.password == model.passwordRepeat && allConditionsMet then
                 ( "green", "match" )
             else
                 ( "red", "not a match" )
 
-        lengthStatus =
+        requiredLength =
             if String.length model.password < 9 then
-                "too short"
+                "Too short"
             else
-                ""
+                ":)"
+
+        requiredChars =
+            if not (any isLower model.password) then
+                "Needs lowercase letters"
+            else if not (any isUpper model.password) then
+                "Needs upperscase letters"
+            else
+                ":)"
+
+        requiredDigits =
+            if not (any isDigit model.password) then
+                "Needs to have digits"
+            else
+                ":)"
+
+        allConditionsMet =
+            List.all (contains ":)") [ requiredLength, requiredChars, requiredDigits ]
     in
-        div [ style [ ( "color", color ) ] ]
-            [ text (message)
-            , br [] []
-            , text (lengthStatus)
+        div []
+            [ h3 [ style [ ( "color", color ) ] ] [ text isMatch ]
+            , ul []
+                [ li [] [ text requiredLength ]
+                , li [] [ text requiredChars ]
+                , li [] [ text requiredDigits ]
+                ]
             ]

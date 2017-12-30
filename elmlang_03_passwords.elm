@@ -1,20 +1,25 @@
 module Main exposing (..)
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
-import String exposing (..)
+import Html.Attributes exposing (style, type_, placeholder)
+import Html.Events exposing (onInput, onClick)
 import Char exposing (isUpper, isLower, isDigit)
+import String
 import List
-import Result
+
+
+{--String and List imported without 'exposing' to show
+    where and how the packages are being used...
+
+
+-}
 
 
 main =
-    Html.program
-        { init = ( model, Cmd.none )
+    Html.beginnerProgram
+        { model = model
         , view = view
         , update = update
-        , subscriptions = (\model -> Sub.none)
         }
 
 
@@ -45,23 +50,23 @@ type Msg
     | Submit Bool
 
 
-update : Msg -> Model -> ( Model, Cmd Msg )
+update : Msg -> Model -> Model
 update msg model =
     case msg of
         Name name ->
-            ( { model | name = name }, Cmd.none )
+            { model | name = name }
 
         Password password ->
-            ( { model | password = password }, Cmd.none )
+            { model | password = password }
 
         PasswordRepeat password ->
-            ( { model | passwordRepeat = password }, Cmd.none )
+            { model | passwordRepeat = password }
 
         Age age ->
-            ( { model | age = age }, Cmd.none )
+            { model | age = age }
 
         Submit bool ->
-            ( { model | submitted = bool }, Cmd.none )
+            { model | submitted = bool }
 
 
 view : Model -> Html Msg
@@ -85,7 +90,7 @@ viewValidation model =
     let
         ( color, isMatch ) =
             if
-                List.any isEmpty
+                List.any String.isEmpty
                     [ model.password
                     , model.name
                     , model.age
@@ -101,32 +106,32 @@ viewValidation model =
 
         requiredLength =
             if String.length model.password < 9 then
-                "Too short"
+                "Password: Too short"
             else
                 ":)"
 
         requiredChars =
-            if not (any isLower model.password) then
-                "Needs lowercase letters"
-            else if not (any isUpper model.password) then
-                "Needs upperscase letters"
+            if not (String.any isLower model.password) then
+                "Password: Needs lowercase letters"
+            else if not (String.any isUpper model.password) then
+                "Password: upperscase letters"
             else
                 ":)"
 
         requiredDigits =
-            if not (any isDigit model.password) then
-                "Needs to have digits"
+            if not (String.any isDigit model.password) then
+                "Password: Needs to have numbers"
             else
                 ":)"
 
         requiredAgeFormat =
-            if isEmpty model.age || not (all isDigit model.age) then
-                "Needs numbers only, please"
+            if String.isEmpty model.age || not (String.all isDigit model.age) then
+                "Age: Needs numbers only, please"
             else
                 ":)"
 
         allConditionsMet =
-            List.all (contains ":)")
+            List.all (String.contains ":)")
                 [ requiredLength
                 , requiredChars
                 , requiredDigits

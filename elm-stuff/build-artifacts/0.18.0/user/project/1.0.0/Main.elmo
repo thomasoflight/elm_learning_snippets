@@ -1,4 +1,5 @@
 var _user$project$Main$viewValidation = function (model) {
+	var requiredAgeFormat = (_elm_lang$core$String$isEmpty(model.age) || (!A2(_elm_lang$core$String$all, _elm_lang$core$Char$isDigit, model.age))) ? 'Needs numbers only, please' : ':)';
 	var requiredDigits = (!A2(_elm_lang$core$String$any, _elm_lang$core$Char$isDigit, model.password)) ? 'Needs to have digits' : ':)';
 	var requiredChars = (!A2(_elm_lang$core$String$any, _elm_lang$core$Char$isLower, model.password)) ? 'Needs lowercase letters' : ((!A2(_elm_lang$core$String$any, _elm_lang$core$Char$isUpper, model.password)) ? 'Needs upperscase letters' : ':)');
 	var requiredLength = (_elm_lang$core$Native_Utils.cmp(
@@ -16,7 +17,11 @@ var _user$project$Main$viewValidation = function (model) {
 				_1: {
 					ctor: '::',
 					_0: requiredDigits,
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: requiredAgeFormat,
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
@@ -29,7 +34,11 @@ var _user$project$Main$viewValidation = function (model) {
 			_1: {
 				ctor: '::',
 				_0: model.name,
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: model.age,
+					_1: {ctor: '[]'}
+				}
 			}
 		}) ? {ctor: '_Tuple2', _0: 'pink', _1: 'one or more fields missing my friend'} : ((_elm_lang$core$Native_Utils.eq(model.password, model.passwordRepeat) && (!allConditionsMet)) ? {ctor: '_Tuple2', _0: 'blue', _1: 'passwords match but... other stuff is off'} : ((_elm_lang$core$Native_Utils.eq(model.password, model.passwordRepeat) && allConditionsMet) ? {ctor: '_Tuple2', _0: 'green', _1: 'match'} : {ctor: '_Tuple2', _0: 'red', _1: 'not a match'}));
 	var color = _p0._0;
@@ -91,7 +100,18 @@ var _user$project$Main$viewValidation = function (model) {
 										_0: _elm_lang$html$Html$text(requiredDigits),
 										_1: {ctor: '[]'}
 									}),
-								_1: {ctor: '[]'}
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text(requiredAgeFormat),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
 							}
 						}
 					}),
@@ -104,24 +124,58 @@ var _user$project$Main$update = F2(
 		var _p1 = msg;
 		switch (_p1.ctor) {
 			case 'Name':
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{name: _p1._0});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{name: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			case 'Password':
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{password: _p1._0});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{password: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'PasswordRepeat':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{passwordRepeat: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Age':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{age: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
-				return _elm_lang$core$Native_Utils.update(
-					model,
-					{passwordRepeat: _p1._0});
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{submitted: _p1._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 		}
 	});
-var _user$project$Main$Model = F3(
-	function (a, b, c) {
-		return {name: a, password: b, passwordRepeat: c};
+var _user$project$Main$Model = F5(
+	function (a, b, c, d, e) {
+		return {name: a, password: b, passwordRepeat: c, age: d, submitted: e};
 	});
-var _user$project$Main$model = A3(_user$project$Main$Model, '', '', '');
+var _user$project$Main$model = A5(_user$project$Main$Model, '', '', '', '', false);
+var _user$project$Main$Submit = function (a) {
+	return {ctor: 'Submit', _0: a};
+};
+var _user$project$Main$Age = function (a) {
+	return {ctor: 'Age', _0: a};
+};
 var _user$project$Main$PasswordRepeat = function (a) {
 	return {ctor: 'PasswordRepeat', _0: a};
 };
@@ -191,12 +245,61 @@ var _user$project$Main$view = function (model) {
 						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
-						_0: _user$project$Main$viewValidation(model),
-						_1: {ctor: '[]'}
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('text'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$placeholder('Age'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$Age),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$button,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('submit'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Main$Submit(true)),
+										_1: {ctor: '[]'}
+									}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('submit'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$core$Native_Utils.eq(model.submitted, true) ? _user$project$Main$viewValidation(model) : A2(
+									_elm_lang$html$Html$div,
+									{ctor: '[]'},
+									{ctor: '[]'}),
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			}
 		});
 };
-var _user$project$Main$main = _elm_lang$html$Html$beginnerProgram(
-	{model: _user$project$Main$model, view: _user$project$Main$view, update: _user$project$Main$update})();
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{
+		init: {ctor: '_Tuple2', _0: _user$project$Main$model, _1: _elm_lang$core$Platform_Cmd$none},
+		view: _user$project$Main$view,
+		update: _user$project$Main$update,
+		subscriptions: function (model) {
+			return _elm_lang$core$Platform_Sub$none;
+		}
+	})();

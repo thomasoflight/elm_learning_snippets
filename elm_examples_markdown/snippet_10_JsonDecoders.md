@@ -71,7 +71,11 @@ main =
         , p [] [ text (toString twoFieldObj) ]
         , p [] [ text (toString multiFieldObj) ]
         ]
+```
 
+Snippet 10B - Json Decoders w/ NoRedInk Pipeline !
+============
+```elm
 module Main exposing (..)
 
 import Html exposing (..)

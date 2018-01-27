@@ -1,37 +1,59 @@
-Snippet 06 - Destructuring
+Snippet 09 - Maybe 
 ============
 
 ```elm
 module Main exposing (..)
 
 import Html exposing (..)
+import List
 
 
-type MyThing
-    = AString String
-    | AnInt Int
-    | ATuple ( String, Int )
+-- the mage keeps track of the swords warriors use by casting spells
+-- the mage either casts hollow sword for the warrior or it casts Just
 
 
-unionFn : MyThing -> String
-unionFn thing =
-    case thing of
-        AString s ->
-            "It was a string: " ++ s
+type alias Sword =
+    String
 
-        AnInt i ->
-            "It was an integer: " ++ toString i
 
-        ATuple ( t_a, t_b ) ->
-            "It was a tuple to unpack with values: " ++ t_a ++ " " ++ toString t_b
+hollowSword =
+    Nothing
+
+
+type alias Warrior =
+    { name : String
+    , weapon : Maybe Sword
+    }
+
+
+fireWarrior =
+    Warrior "John" (Just "Fire Sword")
+
+
+iceWarrior =
+    Warrior "Katrina" Nothing
+
+
+
+-- hollow sword
+
+
+lightWarrior =
+    Warrior "Kieran" (Just "Light Sword")
+
+
+weaponOfDestiny : Warrior -> Sword
+weaponOfDestiny warrior =
+    case warrior.weapon of
+        Nothing ->
+            "This warrior bears the hollow sword"
+
+        Just weapon ->
+            --revealedSwords = List.filter (\a -> a == destinySword) Just item
+            "This warrior consults the `Mage of Maybe` and now holds: " ++ weapon
 
 
 main =
-    div []
-        [ text <| unionFn (AString "baby")
-        , br [] []
-        , text <| unionFn (AnInt 30)
-        , br [] []
-        , text <| unionFn (ATuple ( "baby", 30 ))
-        ]
+    text (weaponOfDestiny iceWarrior)
+
 ```

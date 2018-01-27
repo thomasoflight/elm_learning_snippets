@@ -1,7 +1,6 @@
 Snippet 01 - Currying
 ============
 
-[Ellie](https://ellie-app.com/d9NxJPPr7a1/1)
 
 ```elm
 module Main exposing (..)

@@ -1,8 +1,6 @@
 Snippet 06 - Destructuring
 ============
 
-[Ellie](https://ellie-app.com/rrKy493KFa1/0)
-
 ```elm
 module Main exposing (..)
 

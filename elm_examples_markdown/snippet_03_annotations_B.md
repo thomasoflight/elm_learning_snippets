@@ -1,8 +1,6 @@
 Snippet 03 B - Annotations, Another Helping
 ==============
 
-[Ellie](https://ellie-app.com/b945x2L3da1/1)
-
 ```elm
 module Main exposing (..)
 

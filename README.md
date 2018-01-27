@@ -1,0 +1,3 @@
+# Snippets - When Life Gives You Elm Lemons... 
+
+It's a bunch of little examples showing how Elm works.

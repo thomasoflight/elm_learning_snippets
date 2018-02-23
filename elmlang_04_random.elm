@@ -3,6 +3,7 @@ module Main exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Random exposing (..)
 
 
 init : ( Model, Cmd Msg )
@@ -17,14 +18,18 @@ type alias Model =
 
 
 type Msg
-    = Roll Int
+    = Roll
+    | NewFace Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        Roll int ->
-            ( { model | dieFace = int }, Cmd.none )
+        Roll ->
+            ( { model | amtRolls = model.amtRolls + 1 }, Random.generate NewFace (Random.int 1 6) )
+
+        NewFace int ->
+            ({ model | dieFace = int }) ! []
 
 
 subscriptions : Model -> Sub Msg
@@ -36,7 +41,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ h1 [] [ text (toString model.dieFace) ]
-        , button [ onClick (Roll 6) ] [ text ("roll") ]
+        , button [ onClick (Roll) ] [ text ("roll") ]
         , p [] [ text ("Amount Rolled: " ++ toString model.amtRolls) ]
         ]
 

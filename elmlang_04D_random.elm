@@ -1,13 +1,13 @@
 module Main exposing (..)
 
+import Array exposing (Array)
 import Html exposing (..)
-import Html.Events exposing (..)
 import Html.Attributes as HtmlAttrs
-import Svg exposing (circle, rect, svg)
-import Svg.Attributes exposing (..)
+import Html.Events exposing (..)
 import Random exposing (..)
 import String
-import Array exposing (Array)
+import Svg exposing (circle, rect, svg)
+import Svg.Attributes exposing (..)
 
 
 init : ( Model, Cmd Msg )
@@ -20,7 +20,7 @@ half int =
 
 
 px int =
-    (toString int) ++ "px"
+    toString int ++ "px"
 
 
 allCoordinates =
@@ -59,9 +59,9 @@ dieRender selCoordinates a b rectW rectH =
                 ( x, y ) =
                     coordinate
             in
-                circle [ cx (px (a + (rectW * x))), cy (px (b + (rectH * y))), r "8" ] []
+            circle [ cx (px (a + (rectW * x))), cy (px (b + (rectH * y))), r "8" ] []
     in
-        List.map circleMaker selCoordinates
+    List.map circleMaker selCoordinates
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -85,10 +85,9 @@ update msg model =
         NewFaceB int ->
             case Array.get int model.diePositions of
                 Just coordinates ->
-                    ({ model
+                    { model
                         | dieFaceB = coordinates
-                     }
-                    )
+                    }
                         ! []
 
                 Nothing ->
@@ -142,58 +141,58 @@ view model =
         rectoTwoY =
             px b
     in
-        div []
-            [ svg [ width "100%", height "400", viewBox (String.join " " [ "0", "40", (toString viewWidth), (toString viewHeight) ]) ]
-                ((dieRender (model.dieFace) a b rectW rectH)
-                    ++ (dieRender (model.dieFaceB) a2 b rectW rectH)
-                    ++ [ rect
-                            [ x rectOneX
-                            , y rectOneY
-                            , width (toString rectW)
-                            , height (toString rectH)
-                            , rx (toString (12))
-                            , ry (toString (15))
-                            , fill "none"
-                            , strokeWidth "1px"
-                            , stroke "#666"
-                            ]
-                            []
-                       , rect
-                            [ x rectTwoX
-                            , y rectOneY
-                            , width (toString rectW)
-                            , height (toString rectH)
-                            , rx (toString (12))
-                            , ry (toString (15))
-                            , fill "none"
-                            , strokeWidth "1px"
-                            , stroke "#666"
-                            ]
-                            []
-                       ]
-                )
-            , div []
-                [ button
-                    [ type_ "text"
-                    , onClick (Roll)
-                    , HtmlAttrs.style
-                        [ ( "max-width", "30%" )
-                        , ( "margin-left", "35%" )
-                        , ( "margin-right", "35%" )
-                        , ( "margin-top", "4%" )
-                        , ( "padding", "1% 10% 1% 10%" )
-                        , ( "border-radius", "12px" )
-                        , ( "border", "3px solid" )
-                        , ( "font-size", "40px" )
-                        , ( "letter-spacing", "3px" )
-                        , ( "text-transform", "uppercase" )
-                        , ( "font-weight", "700" )
-                        , ( "background-color", "#fff" )
+    div []
+        [ svg [ width "100%", height "400", viewBox (String.join " " [ "0", "40", toString viewWidth, toString viewHeight ]) ]
+            (dieRender model.dieFace a b rectW rectH
+                ++ dieRender model.dieFaceB a2 b rectW rectH
+                ++ [ rect
+                        [ x rectOneX
+                        , y rectOneY
+                        , width (toString rectW)
+                        , height (toString rectH)
+                        , rx (toString 12)
+                        , ry (toString 15)
+                        , fill "none"
+                        , strokeWidth "1px"
+                        , stroke "#666"
                         ]
+                        []
+                   , rect
+                        [ x rectTwoX
+                        , y rectOneY
+                        , width (toString rectW)
+                        , height (toString rectH)
+                        , rx (toString 12)
+                        , ry (toString 15)
+                        , fill "none"
+                        , strokeWidth "1px"
+                        , stroke "#666"
+                        ]
+                        []
+                   ]
+            )
+        , div []
+            [ button
+                [ type_ "text"
+                , onClick Roll
+                , HtmlAttrs.style
+                    [ ( "max-width", "30%" )
+                    , ( "margin-left", "35%" )
+                    , ( "margin-right", "35%" )
+                    , ( "margin-top", "4%" )
+                    , ( "padding", "1% 10% 1% 10%" )
+                    , ( "border-radius", "12px" )
+                    , ( "border", "3px solid" )
+                    , ( "font-size", "40px" )
+                    , ( "letter-spacing", "3px" )
+                    , ( "text-transform", "uppercase" )
+                    , ( "font-weight", "700" )
+                    , ( "background-color", "#fff" )
                     ]
-                    [ text ("roll") ]
                 ]
+                [ text "roll" ]
             ]
+        ]
 
 
 main =

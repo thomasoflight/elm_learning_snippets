@@ -24,12 +24,13 @@ type alias Model =
     { topic : String
     , nextTopic : String
     , gifUrl : String
+    , error : String
     }
 
 
 init : String -> ( Model, Cmd Msg )
 init topic =
-    ( Model topic "" "waiting.gif"
+    ( Model topic "" "waiting.gif" ""
     , getRandomGif topic
     )
 
@@ -78,10 +79,10 @@ update msg model =
                 )
 
         NewGif (Ok newUrl) ->
-            ( Model model.topic model.nextTopic newUrl, Cmd.none )
+            ( Model model.topic model.nextTopic newUrl "", Cmd.none )
 
-        NewGif (Err _) ->
-            ( model, Cmd.none )
+        NewGif (Err msg) ->
+            ( { model | error = toString msg }, Cmd.none )
 
 
 
@@ -102,6 +103,8 @@ view model =
         , button [ onClick MorePlease ] [ text "More Please!" ]
         , br [] []
         , img [ src model.gifUrl ] []
+        , br [] []
+        , viewError model.error
         ]
 
 
@@ -123,6 +126,15 @@ viewTopicInput topic =
         , br [] []
         , text "Press enter to show more"
         ]
+
+
+viewError err =
+    if String.isEmpty err then
+        text ""
+    else
+        div []
+            [ text <| "Hey there is something up with the internet: " ++ err
+            ]
 
 
 

@@ -24,6 +24,34 @@ initTime =
         |> Task.perform InitTime
 
 
+( origX, origY ) =
+    ( -50, 300 )
+
+
+originalRotAngle =
+    atan2 origX origY * (180 / pi)
+
+
+newRotAngle =
+    originalRotAngle + 90
+
+
+newX =
+    cos (degrees newRotAngle) * 300
+
+
+newY =
+    sin (degrees newRotAngle) * 300
+
+
+transX =
+    300 - newX
+
+
+transY =
+    -50 - newY
+
+
 
 -- MODEL
 
@@ -119,19 +147,25 @@ view model =
             viewPauser model.clockIsRunning
     in
     Html.div [ Html.Attributes.style [ ( "text-align", "center" ) ] ]
-        [ svg [ width "600", height "600", viewBox "0 0  100 150" ]
+        [ svg [ width "600", height "600", viewBox "0 0 100 100" ]
             [ viewClockFace model
             , viewPauseButton model
             ]
+        , Html.br [] []
+        , text <|
+            toString <|
+                newX
+        , Html.br [] []
+        , text <|
+            toString <|
+                newY
 
-        --, text <| toString <| "debug"
         -- *** DEBUG *** ---
         ]
 
 
 
 -- *** DEBUG *** --
---, Html.br [] []
 --, text <| toString <| Time.inSeconds model.secHand
 --, Html.br [] []
 --, text <| toString <| Time.inMinutes model.minHand * 60
@@ -154,12 +188,18 @@ viewClockFace model =
             viewPauser model.clockIsRunning
     in
     --svg []
-    svg [ transform "rotate(-90) translate(-100 0)" ]
+    svg [ transform " translate(100px 0)" ]
+        --svg [ transform "rotate(0) translate(0 0)" ]
         [ circle [ cx "50", cy "50", r "45", fill "#0B79CE", stroke pColor ] []
         , viewClockHand "50" 28 angleHrs "#00CD81"
         , viewClockHand "50" 38 angleMins "#AAAAAA"
         , viewTwoToneHand "50" 40 4 angleSecnds "#023963" "#F0B992"
         ]
+
+
+
+-- originalX = 300
+-- origianlY = 50
 
 
 viewClockHand center radian angle color =
